@@ -15,5 +15,9 @@ function updateID(){
 }
 updateID();
 echo $id;
-var_dump($id)
+var_dump($id);
+
+require("firstpage.php")
 ?>
+
+<hr/>

@@ -1,0 +1,10 @@
+SELECT * FROM tablename WHERE column='text' ORDER BY column
+
+INSERT INTO tablename (column1,column2) VALUES (val1,val2)
+
+UPDATE tablename
+SET column ='text'
+WHERE id=1;
+
+DELETE FROM tablename
+WHERE id=1

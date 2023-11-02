@@ -21,9 +21,10 @@ $float = 3.043;
 
         <h2>Floating numbers</h2>
         <?php
-        echo round($float).'<br />';
+        echo round($float).'<br />';//closest integer that is less than the number
         echo ceil($float).'<br />'; //closest integer that is greater than the number
-        echo rand(1,20); //closest integer that is less than the number
+        echo rand(1,20); //random number
         ?>
+		<hr/>
 	</body>
 </html>
