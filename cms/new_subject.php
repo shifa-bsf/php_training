@@ -1,14 +1,12 @@
-<?php require_once("includes/session.php"); ?>
 <?php require_once("includes/connection.php"); ?>
 <?php require_once("includes/functions.php"); ?>
-<?php confirm_logged_in(); ?>
 <?php find_selected_page(); ?>
 
 <?php include("includes/header.php"); ?>
 <table id="structure">
 	<tr>
 		<td id="navigation">
-			<?php echo navigation($sel_subject, $sel_page); ?>
+			<?php echo navigation($sel_subj, $sel_page); ?>
 		</td>
 		<td id="page">
 			<h2>Add Subject</h2>
@@ -20,7 +18,7 @@
 					<select name="position">
 						<?php
 							$subject_set = get_all_subjects();
-							$subject_count = mysql_num_rows($subject_set);
+							$subject_count = mysqli_num_rows($subject_set);
 							// $subject_count + 1 b/c we are adding a subject
 							for($count=1; $count <= $subject_count+1; $count++) {
 								echo "<option value=\"{$count}\">{$count}</option>";

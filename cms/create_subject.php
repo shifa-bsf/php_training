@@ -1,47 +1,50 @@
-<?php require_once("includes/session.php"); ?>
 <?php require_once("includes/connection.php"); ?>
 <?php require_once("includes/functions.php"); ?>
-<?php confirm_logged_in(); ?>
 <?php
-	$errors = array();
-	
-	// Form Validation
-	$required_fields = array('menu_name', 'position', 'visible');
-	foreach($required_fields as $fieldname) {
-		if (!isset($_POST[$fieldname]) || (empty($_POST[$fieldname]) && $_POST[$fieldname] != 0)) {
-			$errors[] = $fieldname;
-		}
+$errors = array();
+
+// Form Validation
+$required_fields = array('menu_name', 'position', 'visible');
+foreach ($required_fields as $fieldname) {
+	if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
+		$errors[] = $fieldname;
 	}
-	
-	$fields_with_lengths = array('menu_name' => 30);
-	foreach($fields_with_lengths as $fieldname => $maxlength ) {
-		if (strlen(trim(mysql_prep($_POST[$fieldname]))) > $maxlength) { $errors[] = $fieldname; }
+}
+
+$fields_with_lengths = array('menu_name' => 30);
+foreach ($fields_with_lengths as $fieldname => $maxlength) {
+	if (strlen(trim(mysqli_prepare($connection, $_POST[$fieldname]))) > $maxlength) {
+		$errors[] = $fieldname;
 	}
-	
-	if (!empty($errors)) {
-		redirect_to("new_subject.php");
-	}
+}
+
+if (!empty($errors)) {
+	// redirect("new_subject.php");
+	header("Location: new_subject.php");
+	die();
+}
 ?>
 <?php
-	$menu_name = mysql_prep($_POST['menu_name']);
-	$position = mysql_prep($_POST['position']);
-	$visible = mysql_prep($_POST['visible']);
+$menu_name = $_POST['menu_name'];
+$position = $_POST['position'];
+$visible = $_POST['visible'];
 ?>
 <?php
-	$query = "INSERT INTO subjects (
+$query = "INSERT INTO subjects (
 				menu_name, position, visible
 			) VALUES (
 				'{$menu_name}', {$position}, {$visible}
 			)";
-	$result = mysql_query($query, $connection);
-	if ($result) {
-		// Success!
-		redirect_to("content.php");
-	} else {
-		// Display error message.
-		echo "<p>Subject creation failed.</p>";
-		echo "<p>" . mysql_error() . "</p>";
-	}
+$result = mysqli_query($connection, $query);
+if ($result) {
+	// Success
+	header("Location: content.php");
+	die();
+} else {
+	// Display error message.
+	echo "<p>Subject creation failed.</p>";
+	echo "<p>" . mysqli_error($connection) . "</p>";
+}
 ?>
 
-<?php mysql_close($connection); ?>
+<?php mysqli_close($connection); ?>
