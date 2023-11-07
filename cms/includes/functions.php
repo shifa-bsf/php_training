@@ -1,6 +1,18 @@
 <?php
 	// All basic functions added here
+	session_start();
 
+	function redirect( $location = NULL, $message = '',$errors= '') {
+		if ($location != NULL) {
+			header("Location: {$location}");
+			if (!empty($message)) {
+				// Set a session variable for the flash message
+				$_SESSION['flash_message'] = $message;
+				$_SESSION['flash_errors'] = $errors;
+			}
+			exit;
+		}
+	}
 	//check if the database query failed or not
 	function confirm_query($result_set) {
 		if (!$result_set) {
@@ -82,7 +94,7 @@
 			if (!is_null($sel_subj) && $subject["id"] == $sel_subj["id"]) {
 				$output .= " class='selected'";
 			}
-			$output .= "><a href=\"content.php?subj=" . urlencode($subject["id"]) .
+			$output .= "><a href=\"edit_subject.php?subj=" . urlencode($subject["id"]) . 
 				"\">{$subject["menu_name"]}</a></li>";
 			$page_set = get_pages_for_subject($subject["id"]);
 			$output .= "<ul class=\"pages\">";
@@ -99,5 +111,6 @@
 		$output .= "</ul>";
 		return $output;
 	}
+	
 	
 ?>

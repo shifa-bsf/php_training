@@ -18,11 +18,7 @@ foreach ($fields_with_lengths as $fieldname => $maxlength) {
 	}
 }
 
-if (!empty($errors)) {
-	// redirect("new_subject.php");
-	header("Location: new_subject.php");
-	die();
-}
+
 ?>
 <?php
 $menu_name = $_POST['menu_name'];
@@ -30,20 +26,25 @@ $position = $_POST['position'];
 $visible = $_POST['visible'];
 ?>
 <?php
-$query = "INSERT INTO subjects (
-				menu_name, position, visible
-			) VALUES (
-				'{$menu_name}', {$position}, {$visible}
-			)";
-$result = mysqli_query($connection, $query);
-if ($result) {
-	// Success
-	header("Location: content.php");
-	die();
-} else {
-	// Display error message.
-	echo "<p>Subject creation failed.</p>";
-	echo "<p>" . mysqli_error($connection) . "</p>";
+if (empty($errors)) {
+	$query = "INSERT INTO subjects (
+					menu_name, position, visible
+				) VALUES (
+					'{$menu_name}', {$position}, {$visible}
+				)";
+	$result = mysqli_query($connection, $query);
+	if ($result) {
+		redirect("content.php");
+	} else {
+		// Display error message.
+		echo "<p>Subject creation failed.</p>";
+		echo "<p>" . mysqli_error($connection) . "</p>";
+	}
+}
+else {
+	// Errors occurred
+	$message = "There were " . count($errors) . " errors in the form";
+	redirect("new_subject.php",$message,$errors);
 }
 ?>
 
