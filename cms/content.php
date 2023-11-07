@@ -22,7 +22,9 @@ include("includes/header.php");
 					<?php echo $sel_page['menu_name']; ?>
 				</h2>
 				<div class="page-content">
-					<?php echo $sel_page['content']; ?>
+					<?php echo $sel_page['content']; ?><br/><br/>
+					<a href="edit_page.php?page=<?php echo urlencode($sel_page['id']); ?>" >Edit page</a>
+
 				</div>
 			<?php } else { // nothing selected ?>
 				<h2>Select a subject or page to edit</h2>

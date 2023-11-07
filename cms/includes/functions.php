@@ -111,6 +111,21 @@
 		$output .= "</ul>";
 		return $output;
 	}
-	
-	
+
+	function display_errors($message,$message_class,$errors=array()){
+		
+			$message_field = "<div class='message_box message_{$message_class}'>$message";
+			// output list of fields that had errors
+			if (!empty($errors)) {
+				$message_field .= "<p class='errors'>";
+				$message_field .= "Please review the following fields:<br />";
+				foreach ($errors as $error) {
+					$message_field .= " - " . $error . "<br />";
+				}
+				$message_field .= "</p>";
+			}
+			$message_field .= "</div>";
+			echo $message_field;
+		
+	}
 ?>

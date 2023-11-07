@@ -49,7 +49,7 @@ a {
 #main {
     margin: 0px;
     padding: 0px;
-    height: 600px;
+    min-height: 100vh;
     width: 100%;
     background: #ddd;
 }
@@ -67,7 +67,15 @@ a {
     background: #000;
     color: #D4E6F4;
 }
-
+.flex-between{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex-btns{
+    display: flex;
+    column-gap: 10px;
+}
 /* Navigation */
 #navigation {
     width: 150px;
@@ -97,8 +105,7 @@ ul.pages {
 
 /* Page Content */
 #page {
-    padding-left: 2em;
-    padding-top: 10px;
+    padding: 10px 2em;
     vertical-align: top;
     background: #ddd;
 }
@@ -137,6 +144,7 @@ ul.pages {
     padding: 10px;
     text-decoration: unset;
     display: block;
+    width: max-content;
 }
 
 .blue_btn {
@@ -156,4 +164,14 @@ ul.pages {
 
 ul.pages li {
     padding: 5px 0;
+}
+.pages_list ul li {
+    list-style: square;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.pages_list ul li a {
+    color: #1a446c;
+    text-decoration: none;
 }

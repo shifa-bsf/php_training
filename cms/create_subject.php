@@ -1,5 +1,8 @@
-<?php require_once("includes/connection.php"); ?>
-<?php require_once("includes/functions.php"); ?>
+<?php
+require_once("includes/connection.php");
+require_once("includes/functions.php");
+require_once("includes/form_functions.php");
+?>
 <?php
 $errors = array();
 

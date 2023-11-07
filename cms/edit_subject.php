@@ -1,8 +1,11 @@
 <?php
 require_once("includes/connection.php");
-require_once("includes/functions.php"); ?>
+require_once("includes/functions.php");
+require_once("includes/form_functions.php");
+?>
 <?php
-if (intval($_GET['subj']) == 0) {
+$id = intval($_GET['subj']);
+if ($id == 0) {
 	redirect("content.php");
 }
 if (isset($_SESSION['flash_message'])) {
@@ -14,21 +17,12 @@ if (isset($_POST['submit'])) {
 	$errors = array();
 	global $connection;
 	$required_fields = array('menu_name', 'position', 'visible');
-	foreach ($required_fields as $fieldname) {
-		if (!isset($_POST[$fieldname]) || (empty($_POST[$fieldname]) && $_POST[$fieldname] != 0)) {
-			$errors[] = $fieldname;
-		}
-	}
+	$errors = array_merge($errors, check_required_fields($required_fields));
 	$fields_with_lengths = array('menu_name' => 30);
-	foreach ($fields_with_lengths as $fieldname => $maxlength) {
-		if (strlen(trim(mysqli_prepare($connection, $_POST[$fieldname]))) > $maxlength) {
-			$errors[] = $fieldname;
-		}
-	}
+	$errors = array_merge($errors, check_field_length($fields_with_lengths));
 
 	if (empty($errors)) {
 		// Perform Update
-		$id = intval($_GET['subj']);
 		$menu_name = mysqli_real_escape_string($connection, $_POST['menu_name']);
 		$position = intval($_POST['position']);
 		$visible = intval($_POST['visible']);
@@ -68,24 +62,15 @@ if (isset($_POST['submit'])) {
 		<td id="page">
 			<?php
 			if (!empty($message)) {
-				$message_field = "<div class='message_box message_{$message_class}'>$message";
-				// output list of fields that had errors
-				if (!empty($errors)) {
-					$message_field .= "<p class='errors'>";
-					$message_field .= "Please review the following fields:<br />";
-					foreach ($errors as $error) {
-						$message_field .= " - " . $error . "<br />";
-					}
-					$message_field .= "</p>";
-				}
-				$message_field .= "</div>";
-				echo $message_field;
+				display_errors($message, $message_class, $errors);
 			}
-
 			?>
-			<h2>Edit Subject:
-				<?php echo $sel_subj['menu_name']; ?>
-			</h2>
+			<div class="flex-between">
+				<h2>Edit Subject:
+					<?php echo $sel_subj['menu_name']; ?>
+				</h2>
+				<a href="content.php">Cancel</a>
+			</div>
 			<form action="edit_subject.php?subj=<?php echo urlencode($sel_subj['id']); ?>" method="post">
 				<p>Subject name:
 					<input type="text" name="menu_name" value="<?php echo $sel_subj['menu_name'] ?>" id="menu_name" />
@@ -116,17 +101,44 @@ if (isset($_POST['submit'])) {
 					}
 					?> /> Yes
 				</p>
-
-				<input type="submit" name="submit" value="Update Subject" class="blue_btn" /><br />
-				<a href="delete_subject.php?subj=<?php echo urlencode($sel_subj['id']); ?>"
-				class="red_btn"	
-				onclick="return confirm('Are you sure?');">
-					Delete Subject
-				</a>
-
+				<div class="flex-btns">
+					<input type="submit" name="submit" value="Update Subject" class="blue_btn" />
+					<a href="delete_subject.php?subj=<?php echo urlencode($sel_subj['id']); ?>" class="red_btn"
+						onclick="return confirm('Are you sure?');">
+						Delete Subject
+					</a>
+				</div>
 			</form>
 			<br />
-			<a href="content.php">Cancel</a>
+			<hr />
+			<div class="pages_list">
+				<h2>Pages</h2>
+
+				<?php
+				$page_set = get_pages_for_subject($id);
+				// Fetch all rows from $page_set and store them in an array
+				$pages = array();
+				while ($page = mysqli_fetch_array($page_set)) {
+					$pages[] = $page;
+				}
+
+				if (!empty($pages)) {
+					// Display the list of pages
+					?>
+					<ul>
+						<?php
+						foreach ($pages as $page) {
+							echo "<li><a href=\"content.php?page=" . urlencode($page["id"]) . "\">{$page["menu_name"]}</a></li>";
+						}
+						?>
+					</ul>
+					<?php
+				} else {
+					echo "No pages under this subject";
+				}
+				?>
+				<a href="new_page.php?subj=<?php echo $id; ?>">+ Add new page</a>
+			</div>
 		</td>
 	</tr>
 </table>

@@ -1,11 +1,13 @@
-<?php require_once("includes/connection.php"); ?>
-<?php require_once("includes/functions.php"); ?>
-<?php 
+<?php
+require_once("includes/connection.php");
+require_once("includes/functions.php");
+?>
+<?php
 find_selected_page();
 if (isset($_SESSION['flash_message'])) {
 	$message = $_SESSION['flash_message'];
-	$message_class = 'fail';
-	$errors =  $_SESSION['flash_errors'];
+	$message_class = 'warning';
+	$errors = $_SESSION['flash_errors'];
 	unset($_SESSION['flash_message']);
 }
 ?>
@@ -19,22 +21,15 @@ if (isset($_SESSION['flash_message'])) {
 		<td id="page">
 			<?php
 			if (!empty($message)) {
-				$message_field = "<div class='message_box message_{$message_class}'>$message";
-				// output list of fields that had errors
-				if (!empty($errors)) {
-					$message_field .= "<p class='errors'>";
-					$message_field .= "Please review the following fields:<br />";
-					foreach ($errors as $error) {
-						$message_field .= " - " . $error . "<br />";
-					}
-					$message_field .= "</p>";
-				}
-				$message_field .= "</div>";
-				echo $message_field;
+				display_errors($message, $message_class, $errors);
 			}
 
 			?>
-			<h2>Add Subject</h2>
+			<div class="flex-between">
+				<h2>Add Subject</h2>
+				<a href="content.php">Cancel</a>
+
+			</div>
 			<form action="create_subject.php" method="post">
 				<p>Subject name:
 					<input type="text" name="menu_name" value="" id="menu_name" />
@@ -55,10 +50,9 @@ if (isset($_SESSION['flash_message'])) {
 					&nbsp;
 					<input type="radio" name="visible" value="1" /> Yes
 				</p>
-				<input type="submit" value="Add Subject" name="submit"  class="blue_btn"  />
+				<input type="submit" value="Add Subject" name="submit" class="blue_btn" />
 			</form>
 			<br />
-			<a href="content.php">Cancel</a>
 		</td>
 	</tr>
 </table>
