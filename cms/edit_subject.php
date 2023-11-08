@@ -134,9 +134,10 @@ if (isset($_POST['submit'])) {
 					</ul>
 					<?php
 				} else {
-					echo "No pages under this subject";
+					echo "No pages under this subject <br/><br/>";
 				}
 				?>
+				
 				<a href="new_page.php?subj=<?php echo $id; ?>">+ Add new page</a>
 			</div>
 		</td>

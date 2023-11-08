@@ -71,15 +71,16 @@ if (isset($_POST['submit'])) {
 				display_errors($message, $message_class, $errors);
 			}
 			?>
-			<h2>Adding New Page</h2>
-
+			<div class="flex-between">
+				<h2>Adding New Page</h2>
+				<a href="edit_subject.php?subj=<?php echo $sel_subj['id']; ?>">Cancel</a><br />
+			</div>
 			<form action="new_page.php?subj=<?php echo $sel_subj['id']; ?>" method="post">
 				<?php $new_page = true; ?>
 				<?php include "page_form.php" ?>
 				<input type="submit" name="submit" value="Create Page" class="blue_btn" />
 			</form>
 			<br />
-			<a href="edit_subject.php?subj=<?php echo $sel_subj['id']; ?>">Cancel</a><br />
 		</td>
 	</tr>
 </table>
