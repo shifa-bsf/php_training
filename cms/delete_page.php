@@ -7,7 +7,6 @@ if (intval($_GET['page']) == 0) {
 
 $id = intval($_GET['page']);
 if ($page = get_page_by_id($id)) {
-	// LIMIT 1 isn't necessary but is a good fail safe
 	$query = "DELETE FROM pages WHERE id = {$page['id']} LIMIT 1";
 	$result = mysqli_query($connection, $query);
 	echo $result;
@@ -21,11 +20,9 @@ if ($page = get_page_by_id($id)) {
 		redirect("edit_page.php?page=$id",$message);
 	}
 } else {
-	// page didn't exist, deletion was not attempted
 	redirect('content.php');
 }
 ?>
 <?php
-// because this file didn't include footer.php we need to add this manually
 mysqli_close($connection);
 ?>
